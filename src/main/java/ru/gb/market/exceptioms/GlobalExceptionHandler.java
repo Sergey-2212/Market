@@ -10,13 +10,19 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    public ResponseEntity<NotFoundError> catchNonFoundException(NotFoundException e) {
+    public ResponseEntity<AppError> catchNonFoundException(NotFoundException e) {
         log.error(e.getMessage());
-        return new ResponseEntity<>(new NotFoundError(e.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new AppError(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<NotFoundError> catchUsernameNotFoundException (UsernameNotFoundException e) {
+    public ResponseEntity<AppError> catchUsernameNotFoundException (UsernameNotFoundException e) {
         log.error(e.getMessage());
-        return new ResponseEntity<>(new NotFoundError(e.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new AppError(e.getMessage()), HttpStatus.NOT_FOUND);
     }
+
+    public ResponseEntity<AppError> catchValidationErrorException (ValidationErrorException e) {
+        log.error(e.getMessage());
+        return new ResponseEntity<>(new AppError(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
 }

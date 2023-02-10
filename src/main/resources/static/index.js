@@ -1,10 +1,10 @@
 angular.module('app', []).controller('indexController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8080/secure/api/v1';
+    const contextPath = 'http://localhost:8080/market/api/v1/';
 
     $scope.loadProducts = function () {
         console.log("loadProducts")
         $http({
-            url: contextPath + '/products/',
+            url: contextPath + 'products/',
             method: 'GET',
 
         }).then(function (response) {
@@ -12,6 +12,41 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             $scope.ProductsList = response.data;
         })
     };
+
+    $scope.loadCart = function () {
+        console.log("loadCart");
+        $http.get(contextPath + "carts/")
+            .then(function (response) {
+                console.log(response.data);
+                $scope.CartList = response.data;
+        })
+    };
+
+    $scope.addProductToCart = function (productId) {
+        console.log("addProductToCart")
+        $http({
+            url: contextPath + "carts/" + productId,
+            method: 'GET',
+
+            }).then(function (response) {
+            console.log(response.data)
+                $scope.loadCart();
+            })
+    };
+
+    $scope.deleteProductFromCart = function (productId) {
+        $http({
+            url: contextPath + "carts/",
+            method: 'DELETE',
+            params: {
+                id: productId,
+            }
+        }).then(function (response) {
+            console.log(response.data)
+            $scope.loadCart();
+        })
+    };
+
 
 
 
@@ -100,5 +135,6 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
 
     console.log("Перед загрузкой продукта")
     $scope.loadProducts();
+    $scope.loadCart();
     console.log("End of html.")
 });
