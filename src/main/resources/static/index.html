@@ -12,56 +12,7 @@
 
 <body>
 <div class="container" ng-controller="indexController">
-    <h3>Добавить продукт</h3>
-    <form novalidate ng-submit="createProductJSON()">
-        <div class="row g-3">
-            <div class="col-sm-5">
-                <input type="text" class="form-control" placeholder="Название" aria-label="Название" ng-model="newProductJSON.title">
-            </div>
-            <div class="col-sm-3">
-                <input type="number" class="form-control" placeholder="Цена" aria-label="Цена" ng-model="newProductJSON.price">
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-    </form>
 
-    <h3>Редактировать продукт</h3>
-    <form novalidate ng-submit="updateProduct()">
-        <div class="row g-3">
-            <div class="col-sm-2">
-                <input type="text" class="form-control" placeholder="ID" aria-label="ID" ng-model="updateProductJSON.id">
-            </div>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" placeholder="Новое Название" aria-label="Название" ng-model="updateProductJSON.title">
-            </div>
-            <div class="col-sm-3">
-                <input type="number" class="form-control" placeholder="Новая Цена" aria-label="Цена" ng-model="updateProductJSON.price">
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-    </form>
-<!--    <h4>Фильтр списка продуктов</h4>-->
-<!--    <form novalidate ng-submit="loadProducts()">-->
-<!--        <div class="row g-3">-->
-<!--            <div class="col-sm-2">-->
-<!--                <input type="number" value="0" class="form-control" placeholder="От" ng-model="productListFilter.min">-->
-<!--            </div>-->
-<!--            <div class="col-sm-2">-->
-<!--                <input type="number" value="100000" class="form-control" placeholder="До" ng-model="productListFilter.max">-->
-<!--            </div>-->
-<!--            <div class="col-sm-5">-->
-<!--                <input type ="text" class="form-control" placeholder="Название" ng-model="productListFilter.titleLike">-->
-<!--            </div>-->
-<!--            <div class="col-last">-->
-<!--                <button type="submit" class="btn btn-primary">Применить</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </form>-->
-    <p></p>
     <h3>Список продуктов</h3>
     <table class="table table-hover" cellpadding="0" , cellspacing="0">
         <tr>
@@ -76,7 +27,30 @@
             <td>{{p.title}}</td>
             <td>{{p.price}}</td>
             <td>
-                <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Исключить</button>
+                <button class="btn btn-danger" ng-click="addProductToCart(p.id)">В Корзину</button>
+                <!-- повесили листенер на кнопку "Исключить". class="btn btn-danger" применяет цвет кнопки-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p></p>
+
+    <h3>Корзина</h3>
+    <table class="table table-hover" cellpadding="0" , cellspacing="0">
+        <tr>
+            <td>ID</td>
+            <td>Название</td>
+            <td>Стоимость</td>
+            <td>Удалить</td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="pr in CartList">
+            <td>{{pr.id}}</td>
+            <td>{{pr.title}}</td>
+            <td>{{pr.price}}</td>
+            <td>
+                <button class="btn btn-danger" ng-click="deleteProductFromCart(p.id)">Удалить</button>
                 <!-- повесили листенер на кнопку "Исключить". class="btn btn-danger" применяет цвет кнопки-->
             </td>
         </tr>

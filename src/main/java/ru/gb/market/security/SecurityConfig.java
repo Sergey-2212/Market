@@ -17,10 +17,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(JwtRequestFilter filter,HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests()
-                .requestMatchers("/api/**")
-                .authenticated()
+//                .requestMatchers("/secured")
+//                .authenticated()
+                .anyRequest().permitAll()
                 .and()
                 //выключает сессионную безопасность
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
