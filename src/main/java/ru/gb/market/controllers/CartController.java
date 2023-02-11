@@ -3,37 +3,42 @@ package ru.gb.market.controllers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.gb.market.Dto.ProductDto;
-import ru.gb.market.converters.ProductConverter;
-import ru.gb.market.entities.Product;
+import ru.gb.market.Dto.Cart;
 import ru.gb.market.services.CartService;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/carts")
+@RequestMapping("/api/v1/cart")
 @Slf4j
 public class CartController {
 
     private final CartService cartService;
-    private final ProductConverter productConverter;
 
     @GetMapping("/")
-    public List<ProductDto> getCart() {
-        return cartService.getCart().stream().map(p -> productConverter.entityToDtoConverter(p)).collect(Collectors.toList());
+    public Cart getCart() {
+        return cartService.getTempCart();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/add/{id}")
     public void addProductToCartById (@PathVariable Long id) {
         log.debug("ID = " + id);
         cartService.addProduct(id);
     }
 
-    @DeleteMapping("/")
-    public void deleteProductFromCartById (@RequestParam Long id) {
-        cartService.deleteProduct(id);
+    @GetMapping("/changequantity/")
+    public void changeItemQuantityById (@RequestParam Long productId, @RequestParam Integer delta) {
+         cartService.changeItemQuantityById(productId, delta);
+    }
+
+
+    @DeleteMapping("/delete/item/")
+    public void deleteItemById(@RequestParam Long productId) {
+        cartService.deleteItem(productId);
+    }
+
+    @DeleteMapping("/delete/all/")
+    public void deleteAllProductsFromCart () {
+        cartService.deleteAllItems();
     }
 
 
