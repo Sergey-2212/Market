@@ -1,10 +1,10 @@
 angular.module('app', []).controller('indexController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8080/market/api/v1/';
+    const contextPath = 'http://localhost:8080/market/api/v1';
 
     $scope.loadProducts = function () {
         console.log("loadProducts")
         $http({
-            url: contextPath + 'products/',
+            url: contextPath + '/products/',
             method: 'GET',
 
         }).then(function (response) {
@@ -15,17 +15,17 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
 
     $scope.loadCart = function () {
         console.log("loadCart");
-        $http.get(contextPath + "carts/")
+        $http.get(contextPath + "/cart/")
             .then(function (response) {
                 console.log(response.data);
-                $scope.CartList = response.data;
+                $scope.cart = response.data;
         })
     };
 
     $scope.addProductToCart = function (productId) {
         console.log("addProductToCart")
         $http({
-            url: contextPath + "carts/" + productId,
+            url: contextPath + "/cart/add/" + productId,
             method: 'GET',
 
             }).then(function (response) {
@@ -34,18 +34,41 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             })
     };
 
+    $scope.changeItemQuantity = function (productId, delta) {
+        console.log("changeItemQuantity" + "productId - " + productId + ", delta - " + delta)
+        $http({
+            url: contextPath + "/cart/changequantity/",
+            method: 'GET',
+            params: {
+                productId: productId,
+                delta: delta,
+
+            }
+        }).then(function (response) {
+        $scope.loadCart();
+        })
+    };
+
     $scope.deleteProductFromCart = function (productId) {
         $http({
-            url: contextPath + "carts/",
+            url: contextPath + "/cart/delete/item/",
             method: 'DELETE',
             params: {
-                id: productId,
+                productId: productId,
             }
         }).then(function (response) {
             console.log(response.data)
             $scope.loadCart();
         })
     };
+
+    $scope.removeAllItemsFromCart = function () {
+        $http.delete(contextPath + "/cart/delete/all/")
+            .then(function (response) {
+            console.log(response.data)
+            $scope.loadCart();
+        })
+    }
 
 
 
